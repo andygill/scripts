@@ -1,5 +1,7 @@
 # usage: GenerateBootPHP [bootfile|mysql] <user> <db>
-open(PASS,"/Users/andy/private/db_pass");
+$HOME = $ENV['HOME'];
+
+open(PASS,"$HOME/etc/db_pass");
 while(<PASS>) {
     chop;
     my ($DB_USER,$DB_HOST,$DB_NAME,$DB_PASSWORD) = split(/:/,$_);
