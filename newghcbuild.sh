@@ -1,7 +1,8 @@
 #!/bin/sh
 # example:
 #  sh scripts/newghcbuild.sh ghc-ABC <flavor> [local]
-#  flavor == perf | quickest | quick |  devel1 | devel2
+#  flavor == perf | quickest | quick |  devel1 | devel2 
+#          | validate
 # Create a new ghc build
 
 if test "x$1" == "x" ; then
@@ -24,13 +25,20 @@ cd $1
 if test "x$3" == "x" ; then
   darcs pull -a 
 else
-  darcs pull -a ../ghc-HEAD
+  darcs pull -a ../ghc-HEAD	# does not WORK!!
 fi
 chmod +x darcs-all
 ./darcs-all pull -a
 ./darcs-all --extra get
-./darcs-all --testsuite get
-./darcs-all --nofib get
+#./darcs-all --testsuite get
+#./darcs-all --nofib get
+
+if test "x$2" == "xvalidate" ; then
+TMPSTR="s/#BuildFlavour = quick/BuildFlavour = quick/"
+sed "$TMPSTR" mk/build.mk.sample > mk/build.mk
+sh -x validate > LOG.val 2>&1 &
+
+else
 
 TMPSTR="s/#BuildFlavour = $2/BuildFlavour = $2/"
 sed "$TMPSTR" mk/build.mk.sample > mk/build.mk
@@ -38,8 +46,5 @@ sed "$TMPSTR" mk/build.mk.sample > mk/build.mk
 sh boot
 ./configure
 make > LOG 2>&1 &
+fi
 disown %1
-
-
-#sh -x validate > LOG 2>& 1 &
-#disown %1

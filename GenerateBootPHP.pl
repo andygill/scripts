@@ -1,5 +1,5 @@
 # usage: GenerateBootPHP [bootfile|mysql] <user> <db>
-$HOME = $ENV['HOME'];
+$HOME = $ENV{'HOME'};
 
 open(PASS,"$HOME/etc/db_pass");
 while(<PASS>) {
