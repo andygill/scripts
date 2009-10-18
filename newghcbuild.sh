@@ -29,14 +29,18 @@ else
 fi
 chmod +x darcs-all
 ./darcs-all pull -a
-./darcs-all --extra get
+#./darcs-all --extra get
+./darcs-all get
 #./darcs-all --testsuite get
 #./darcs-all --nofib get
+
+# sh boot; ./configure; make -j3 is what ChillX suggests:r
 
 if test "x$2" == "xvalidate" ; then
 TMPSTR="s/#BuildFlavour = quick/BuildFlavour = quick/"
 sed "$TMPSTR" mk/build.mk.sample > mk/build.mk
 sh -x validate > LOG.val 2>&1 &
+
 
 else
 
